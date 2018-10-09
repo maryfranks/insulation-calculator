@@ -1,21 +1,23 @@
 const fs = require('fs');
 const readline = require('readline')
-const inputFile = 'input.txt'
+const input = 'input.txt'
 
 // build information objects
 let people = {}
-let cities = {}
+let places = {}
 let queries = []
 let results = []
 
 function readFile() {
 
   let rl = readline.createInterface({
-    input : fs.createReadStream(inputFile),
+    input : fs.createReadStream(input),
   })
 
   rl.on('line', function(line) {
+
     let splitLineArray = line.substr(1).split(/[" "]+[" ]/)
+
     if (splitLineArray.length > 2) {
 
       let city = splitLineArray[1]
@@ -31,19 +33,25 @@ function readFile() {
       people[person] = info
 
     } else if (splitLineArray.length > 1){
+
       let name = splitLineArray[0]
       let region = splitLineArray[1].slice(0, splitLineArray[1].length-1)
       let query = [name, region]
       queries.push(query)
     }
   })
+
+  rl.on("close", function() {
+        makeResultsArray()
+        console.log(results.join("\n "))
+    });
 }
 
 function addToCities (key, value) {
-  if (cities.hasOwnProperty(key)) {
-    cities[key].push(value)
+  if (places.hasOwnProperty(key)) {
+    places[key].push(value)
   } else {
-  cities[key] = [value]
+  places[key] = [value]
   }
 }
 
@@ -52,9 +60,10 @@ function makeResultsArray() {
     let name = array[0]
     let place = array[1]
     let rscore = people[name][1]
-    let result = calculateScore(cities[place], rscore)
+    let result = calculateScore(places[place], rscore)
     array.push(result)
     results.push(array)
+    console.log(queries);
   })
 }
 
@@ -93,10 +102,12 @@ function calculateScore(rscoreArray, rscoreIndividual) {
 }
 
 readFile()
-makeResultsArray()
-console.log(`people: ${people}`)
-console.log(`cities: ${cities}`)
-console.log(`queries: ${queries}`)
-console.log(`results: ${results}`)
 
-// console.log(`city: ${city}, region: ${region}, country: ${country}`);
+module.exports.readFile = readFile;
+module.exports.addToCities = addToCities;
+module.exports.makeResultsArray = makeResultsArray;
+module.exports.calculateScore = calculateScore;
+module.exports.results = results;
+module.exports.places = places;
+module.exports.people = people;
+module.exports.queries = queries;
