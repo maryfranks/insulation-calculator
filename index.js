@@ -1,6 +1,5 @@
 const fs = require('fs');
 const readline = require('readline')
-const input = 'input.txt'
 
 // build information objects
 let people = {}
@@ -11,7 +10,8 @@ let results = []
 function readFile() {
 
   let rl = readline.createInterface({
-    input : fs.createReadStream(input),
+    input : process.stdin
+    // input : fs.createReadStream('input.txt'),
   })
 
   rl.on('line', function(line) {
@@ -45,6 +45,7 @@ function readFile() {
         makeResultsArray()
         console.log(results.join("\n "))
     });
+
 }
 
 function addToCities (key, value) {
@@ -63,7 +64,6 @@ function makeResultsArray() {
     let result = calculateScore(places[place], rscore)
     array.push(result)
     results.push(array)
-    console.log(queries);
   })
 }
 

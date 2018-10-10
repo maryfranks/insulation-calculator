@@ -29,19 +29,11 @@ describe('index.js', () => {
     })
   });
 
-  it('should make properly formatted queries', () => {
-    assert.deepEqual(index.queries, [
-        [ 'John Doe', 'Canada' ],
-        [ 'John Doe', 'Canada/Ontario' ],
-        [ 'Alicia Yazzie', 'US/Arizona' ]
-      ])
-  });
-
   it('should populate results', () => {
     assert.deepEqual(index.results, [
       [ 'John Doe', 'Canada', 4 ],
       [ 'John Doe', 'Canada/Ontario', 5 ],
-      [ 'Alicia Yazzie', 'US/Arizona', 10 ] 
+      [ 'Alicia Yazzie', 'US/Arizona', 10 ]
     ])
   });
 
